@@ -1,4 +1,4 @@
-# ![](https://i.imgur.com/TcupMvo.png 'Hermes logo'){width=75 height=75px} Hermes - **_DEMO_**
+# Hermes - **_DEMO_**
 
 Hermes is a real-time messaging application that enables users to communicate seamlessly with each other. These communications take place in group chats, which users can create/leave/join. Hermes provides a reliable, secure and efficient platform for instant messaging, additionaly supporting text-file transfers. At this stage of development, the application provides users with a terminal interface, containing minimal working functionalities as prove of concept.
 
@@ -32,7 +32,7 @@ npm run client
 
 This will launch the client in current terminal and connect to our server. Communication is secured by modern day standards utilizing RSA encripted certificates. User information is stored in accordance to European GDPR rules, requests to purge personal information can be sent to: [hermes.info.questions@gmail.com](mailto:hermes.info.questions@gmail.com?subject=Chatter-PenOCWProject%20Inquiry&body=Hello,%0A%0AI%20have%20the%20following%20questions%3A%0A%0A).
 
-![](https://i.imgur.com/AhA1dqH.png 'Terminal example'){width=1200 height=600px}
+![](https://i.imgur.com/AhA1dqH.png 'Terminal example')
 
 <br>
 
