@@ -1,0 +1,10 @@
+[
+  {
+    "channel_ID": "1",
+    "name": "Database"
+  },
+  {
+    "channel_ID": "2",
+    "name": "Server"
+  }
+]

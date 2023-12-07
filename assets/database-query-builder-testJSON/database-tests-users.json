@@ -1,0 +1,22 @@
+[
+  {
+    "email_ID": "pieter.vanderschueren1@student.kuleuven.be",
+    "user_name": "Pieter",
+    "last_seen_utc_timestamp": "2023-11-06T18:26:45.126Z",
+    "hashed_pass": "a9ab1kipcornbdb3",
+    "channels": ["1"],
+    "self_destruct_at_utc_timestamp": "2024-11-06T12:12:35.126Z",
+    "friends": ["jonas.couwberghs@student.kuleuven.be"],
+    "destroy_warning": false
+  },
+  {
+    "email_ID": "jonas.couwberghs@student.kuleuven.be",
+    "user_name": "Jonas",
+    "last_seen_utc_timestamp": "2023-11-06T18:26:45.126Z",
+    "hashed_pass": "99ac8bf4bf76806c",
+    "channels": ["1", "2"],
+    "self_destruct_at_utc_timestamp": "2024-11-06T12:12:35.126Z",
+    "friends": ["pieter.vanderschueren1@student.kuleuven.be"],
+    "destroy_warning": false
+  }
+]

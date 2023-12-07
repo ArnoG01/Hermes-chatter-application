@@ -1,0 +1,9 @@
+[
+  {
+    "message_ID": "one",
+    "sender_ID": "jonas.couwberghs@student.kuleuven.be",
+    "channel_ID": "2",
+    "sent_at_utc_timestamp": "2023-11-06T18:26:45.126Z",
+    "message": "I have an ID that is already in database"
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "message_ID": "1",
+    "sender_ID": "jonas.couwberghs@student.kuleuven.be",
+    "channel_ID": "1",
+    "sent_at_utc_timestamp": "2023-11-06T19:26:45.126Z",
+    "message": "Hello world"
+  },
+  {
+    "message_ID": "2",
+    "sender_ID": "pieter.vanderschueren1@student.kuleuven.be",
+    "channel_ID": "1",
+    "sent_at_utc_timestamp": "2023-11-06T18:26:45.126Z",
+    "message": "Goodbye world"
+  },
+  {
+    "message_ID": "3",
+    "sender_ID": "pieter.vanderschueren1@student.kuleuven.be",
+    "channel_ID": "1",
+    "sent_at_utc_timestamp": "2023-11-06T20:26:45.126Z",
+    "message": "Goodnight world"
+  }
+]

@@ -1,0 +1,328 @@
+
+P&O CW 2023-2024 – First Semester chatter app
+P&O CW 2023-2024 – First Semester chatter app
+
+Background Story
+
+Welcome to our innovative startup venture! Our founder, a visionary with grand dreams and deep pockets, has set their sight on the world of messenger apps. Of course they are counting on your technical expertise to turn this into reality.
+
+As a young team of fresh talents, we have been entrusted with the task of crafting a Minimum Viable Product (MVP) by the late spring of next year, a critical milestone to impress our venture capitalists.
+
+At our startup, we prioritize function over form. The app must be clear and easy to use, but a GUI can wait until a later stage of the development. Our founder’s primary goal is to impress a very critical board by highlighting the capabilities of our product. The immediate objective is to construct a minimalist chat server, laying the groundwork for forthcoming innovations.
+
+Our prototype will reside in the terminal. We are charged with ensuring that the essential features are robustly present, while our code is properly documented and rigorously tested to prove its effectiveness to the board. The company is known for delivering carefully finished, top quality products and the result must not hurt that reputation.
+
+Let’s code our way to success!
+Step 0: Meet your team
+
+    You have been assigned to a team of 8-9 people.
+    We will assign you a spot in the lab.
+        Always use the same spot in the lab with your team.
+
+:bulb: Take some time to meet each other, you will be working together for the rest of the academic year.
+Step 1: Set up the repository
+
+The source code of your project will be on the KU Leuven Gitlab server with the same setup as in the past weeks: other teams will be able to see your source code / merge requests / issues / branches / …
+
+    Make a new repository for your team in the chatter folder on KU Leuven gitlab. Use team-xx as the repository name, with xx a two digit version of your team number; e.g. team-01.
+    Add your team members to your repository.
+    Clone the chatter example repository, which provides you with a starting point and set your own repo as the new remote.
+    ☠️ Do not push to our chatter repository… We 🥷 will find you! (The easiest way for the creator of your new repo is to also clone the new repo into a new directory…)
+
+You can use the repositories from the past weeks as further examples. You can check the First steps with Node, JavaScript and TypeScript tutorial if needed.
+
+    All members of the team clone your new team’s repo.
+    ☠️ Set up your editor correctly as in Welcome to the team!.
+    ☠️ Enable format-on-save.
+    ☠️ Do not check in your .vscode directory. This was only to make for an easy start in setting up VS Code for the An illustrative story of a development team tutorial.
+
+Step 2: Have a team meeting
+
+Read through the rest of the assignment and then have a first team meeting.
+
+:bulb: Have a team meeting each Monday at the start of the session. Keep notes of these team meetings. We gave you an example in the story book assignment… We might ask to see them…
+
+The idea is that you subdivide the assignment in small and independent tasks that are testable and that you agree with your team what the minimal bare bones unit tests are for the tasks, similar as in the story book example. If you notice that tasks are too big or not well defined (this will happen) then you will have to reiterate with your team until you find the right balance!
+
+You will not be able to define all features and all corresponding tasks in the first team meeting. Keep it focused. Only mention those things you want to deal with in the next week(s). You have to read through the assignment and figure out which tasks are the most important ones to do first. Also sketch your long term plan.
+
+Make sure to set up a digital channel of communication within your team. What you use (Discord, Slack, Zulip, …) is up to you.
+
+Also set up a platform where you can share ‘notes’ to keep track of to-do lists and document features and tasks as in the story book example. There should be at least one note for every Monday team meeting… We recommend the use of HackMD pages for this. It can take some time to get used to all the hackmd features in the beginning, but it will pay off down the road.
+
+:exclamation: Each team is assigned two TAs. Add your team’s TAs to your channel and notes.
+Description of the app
+
+We expect you to build a terminal-based chat application consisting of a central server, a database and several chat clients.
+
+The application should satisfy the basic chat app requirements along with some additional features.
+
+Description of the app :calling:
+
+Basic functionality
+By the end of the semester, we expect a functional chat app satisfying at least the following requirements:
+
+    Users can sign up and log in with their account
+    Users can join and leave channels
+    Users can send messages in a channel
+    All other members of the channel receive this message
+    Graceful shutdown of the server does not result in data loss (server persistence)
+
+Additional features (wanted by the end of the semester)
+
+    Login with password
+    Message look-up
+    File sharing
+    Data purging
+
+Basic chat application
+The chat server
+
+The simplest architecture for this task involves a central server which coordinates the different chat clients. Naturally, the chat server will have to support multiple clients at the same time.
+
+In first instance the chat server can just be a server which clients can connect and send messages to. It relays these messages to the other clients.
+The chat client
+
+The chat client’s job is to interface with the user and hide as much of the technical details of how to interact with the chat server from the user.
+
+You will have to find a convenient way for the user to interact with the chat client through the terminal.
+
+We will use the email address of the user as a unique identifier. This means that users can start communicating with other users if they know that email address.
+The database
+
+We will ensure server persistence by saving users, channels, messages… locally at the server-side. Think about the information you want to store in the database and how you want to store it.
+
+Some file format options include, but are not limited to, YAML, TOML or JSON files.
+
+The tables below can give you a database structure idea.
+
+Database
+USER 						
+user_name 	email 	last_seen_utc_timestamp 	hashed_pass 	channels 	self_destruct_at_utc_timestamp 	…
+MESSAGE 				
+message_ID 	sender_ID 	channel_ID 	sent_at_utc_timestamp 	…
+CHANNEL 			
+channel_ID 	user_emails 	message_IDs 	…
+
+:bulb: The reason to have ids and names is to make it easy to rename a user or a channel.
+Usage of websockets
+
+We will be using the ws package to have WebSockets in Node.js. (WebSockets are standard available in your browser but not in Node.js.)
+
+WebSocket connections exist as ws:// and wss:// protocols, similar to http:// and https://. Initially it is sufficient to get a ws:// version running (however, if you keep this till the end of the semester, then we will ask questions about passwords traveling over your internet connection…).
+
+Read more at:
+
+    https://github.com/websockets/ws
+    https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+    https://ably.com/blog/web-app-websockets-nodejs
+
+Runtime typechecking
+
+You will need to send JSON messages over the WebSocket connection. One might be tempted to send e.g.
+
+{ "command": "ChannelJoin", "email": "me@foo.be", "mode": 4, "channelId": "#a00d200b" }
+
+and on the other side accept this as a string and then run this through JSON.parse() and hope to be able to access the .command property and the .email property as things of type string and the mode property as having type number. However, you will quickly notice that TypeScript will consider the return type to be any and that you cannot even know if those fields exist…
+
+The only safe way out is to actually have runtime code which will check that what you receive is indeed of the correct type and then also explain this to the TypeScript compiler.
+
+You should use the zod npm package to tackle this problem. Have a look in the repository (the playground directory) for an example on how zod is used.
+
+☠️ Do not disable the linter or put exclamation marks etc. They are only quick fixes. The zod package will solve this problem for you.
+The protocol
+
+You will need to come up with a protocol such that the server and client can talk to each other. At the same time you should abstract away implementation details of either where possible.
+
+E.g. if somebody joins a chat channel we could send a message with the following interface:
+
+interface ChannelJoin {
+  email: string,
+  channelId: string
+}
+
+The server could respond with
+
+interface ChannelJoined {
+  email: string,
+  channelId: string
+}
+
+Note that this is a form of stateless communication.
+Of course, the server should actually verify that the email corresponds to the connected client and that the channelId exists.
+
+Client
+
+Client
+
+Server
+
+Server
+
+Other clients
+
+Other clients
+
+ChannelJoin(chan, me)
+
+ChannelJoined(chan, me)
+
+ChannelJoined(chan, me)
+
+Setting up a connection could be done like:
+
+interface LogIn {
+  email: string
+  password: string
+}
+
+The server checks the password and could respond with:
+
+interface LoggedIn {
+  email: string,
+}
+
+or
+
+interface LogInRefused {
+  email: string,
+  reason: string
+}
+
+Features
+
+For each feature, we specify the minimal requirements we deem sufficient for the target by the end of the first semester. You are free to improve/expand these features as much as you want or to even add bonus features…[1] But please only improve/expand once the minimal requirements are ticked off. For any changes or extensions you must be able to clearly motivate what and how by a use case.
+Password/passphrase login
+
+When signing up for the chatter app, users should supply a password/passphrase which they have to provide each time they log in. As this password must be kept secret at all cost, it should never be stored in the database in plain text!
+
+:warning: Think about this carefully and look up how to securely store passwords/passphrases in your database.
+
+Also consider this cartoon and explanation (e.g. about rainbow tables).
+Message lookup
+
+Users like to look up what has been said before in a conversation with other users. Upon request, messages around a specific point in time, can be relayed to the client.
+
+For example, if the user executes the following command in a specific channel
+
+> lookup 15:00 26-10-2023
+
+the server returns the message sent in that channel closest to 15:00 on October 26th 2023, accompanied by some messages before and after it.
+
+:warning: Can you find a more efficient algorithm than just searching the channel chronologically?
+File sharing and compression
+
+    Scenario
+    A user has written a beautiful opera (in a separate text file) to impress a very special other user and wants to share this file with them. Sending an entire opera over the network could overburden it and storing it in the database will take up a lot of space. It would be a good idea to send and store a compressed version of the file and only decompress once the file is received.
+
+Users should be able to send each other .txt-files containing only basic ASCII characters, for example by running a command in the chat client like
+
+> send_file "/path/to/opera.txt"
+
+:bulb: TIP you can check if a .txt file is in plain ASCII, by running
+
+> file my_file.txt
+my_file.txt: ASCII text
+
+Instead of sending a large .txt file over the network, the client should first compress it into a binary code. This code will contain all the information in the original file, but will be smaller in size.
+
+We want you to use a Huffman code to encode and decode files. More specifically, for each file you need to construct a Huffman tree, based on a frequency analysis. Both the tree and the encoded file should be sent to the server as they are both required for the decoding step.
+
+:warning: What is an efficient way to transmit a binary tree to the server? How do you represent it?
+
+:information_source: Huffman codes are a widely used method for data compression. They are designed to efficiently represent data by assigning shorter codes to more frequent elements and longer codes to less common ones (similar to Morse code). Huffman coding operates on a binary tree structure, with each leaf node representing a unique symbol, such as a character in the text document. The path to the leaf corresponds with the code.
+
+The tree is constructed in a way that ensures no code is a prefix of another, which makes it uniquely decodable. This property allows for lossless compression and efficient data retrieval.
+
+Example Huffman tree
+
+Image from: https://aquarchitect.github.io/swift-algorithm-club/Huffman Coding/ (27-10-2023)
+
+:warning: You will have to analyse your results qualitatively and quantitatively.
+
+    What are the benefits and the drawbacks of this approach?
+    What is the achieved compression rate?
+    How could you improve the used algorithm? (You do not have to go through the effort of implementing improvements or extensions; we will leave that for the next semester…)
+
+Database clean-up
+
+We do not want our database to keep hold of obsolete or outdated data. Inactive users should be removed from the database. They should of course be notified in advance. Similarly, channels from which all users have been removed, along with their messages, should be systematically purged from the database.
+
+    Example
+    One way of implementing this is to assign to each user a self-destruct timestamp when signing up. After this deadline, the user and all associated files will be deleted. Before this, but well in time (e.g. half-life), the user is warned about this, such that they can extend the self-destruct timestamp.
+
+:warning: The database should systematically check whether files can and should be deleted.
+Remarks
+
+    Work as a team
+    Our focus is on working together as a team using the ideas you learned from the story book.
+    Take responsibility for your code, convince the others (and yourself) that it works correctly, give feedback to your team mates on their code.
+    Use good commit messages, branch names and merge requests.
+    Use draft merge requests.
+
+    Write flexible code
+    Think about the structure of your software.
+    In the second semester we will ask you to change, adapt and improve parts of your code. If your code is not flexible/modular, you might have to start from scratch.
+
+    Asynchrony
+    A chat app is inherently very asynchronous. Functions on the client side will often need to wait for the server to send information over the network and vice versa.
+    Our database are files on disk and these operations will be asynchronous as well.
+    This means that you might run into the problem of writing and reading a file at the same, with possible corruption. (Such problems are hard to debug…)
+    You can make use of the fact that Node is not multi-threaded and you can therefore easily create mutex locks in your code if necessary.
+
+    Unit-testing and mocking
+    As in the story book assignment, we require you to write unit tests for as much of your codebase as possible.
+    To write integrated tests related to the client-server interaction, things quickly become more complicated when using the underlying WebSocket infrastructure. To decouple this we provide a MockWebSocket and a MockWebSocketServer. These can also be found in the repository.
+
+    Intellectual property
+    When you find code on the internet that helped you solve a particular problem, attribute the source in your source files and provide a URL. Pay attention to fair use. Respect copyright clauses.
+
+    You are allowed to use npm packages implementing certain functionalities (as long as they do not implement a complete feature, like e.g. Huffman encoding…). Always check the licenses of those packages. Keep a file LICENSES.md (plural, as LICENSE.md would be the license for your package) in your repository which lists the npm packages and their software license (just the type of the license, not the full text), also if you use e.g. a dictionary file, or other external files or code, then list the license there. This is only needed for npm packages which are needed for the final application, so not for the development packages.
+
+    If you want to use or adjust an implementation that you found online but you are not sure if we want you to actually implement it yourself, then please ask! If you use verbatim or modified code, put an attribution in your source files, add a URL, and add the type of the license to the LICENSES.md file. Also write down in the source files what you modified.
+
+    As for sharing with other teams, we make a distinction between code and notes.
+    For the source code of your project we have the following rules from the Assignment commons: ES-GW-TP-TS-PP-VP:
+        ES: External Sources
+        GW: Group Work
+        TP: Talk Peers
+        TS: Talk Strangers
+        PP: Pass Peers
+        VP: View Peers
+
+    To avoid any confusion: you can look at code from other teams, have it on your laptop, run it, test it, smell it, etc… but you cannot share it with people outside of the course (as it is up to the original authors to decide if they allow that yes or no).
+
+    Of course, it is not allowed to copy code from other teams into the solution of your own team. If the code from another team gave you a hint on how to solve your problem then you can try to implement a similar solution and you put an attribution in your source files that you got (part of) the idea from some other team (and explicitly name that team). There is no shame in doing this, it shows you have the style it takes…
+
+    For the notes that you share with your team we have more restricted rules from the Assignment commons than for the source code: ES-GW-TP-TS-NPP-NVP:
+        ES: External Sources
+        GW: Group Work
+        TP: Talk Peers
+        TS: Talk Strangers
+        NPP: No Pass Peers
+        NVP: No View Peers
+
+    It is not allowed to look at notes from other teams. Don’t share your own notes.
+
+    GDPR
+    Our database stores information about users. Therefore, GDPR regulations apply. These regulations are designed to protect individuals’ privacy and their rights concerning their personal data. Obtain informed consent for storing and processing data, don’t store more data than you need… At the end of the semester we will act as normal users of your application and we expect the GDPR rules to be correctly followed.
+
+    Improving/adding features
+    The features listed above are what we deem minimal requirements for chatter app. You are allowed to improve existing features or add new ones. You can find some suggested bonus features at the bottom of this page. But please only improve/expand once the minimal requirements are ticked off. For any changes or extensions you must be able to clearly motivate what and how by a use case.
+
+Possible bonus features
+
+    Load last messages when opening a channel
+    Scroll up through these messages
+    Allow users to add friends / require users to be friends before chatting
+    …
+
+Deadlines
+
+    Report (one per team) on 2023-12-05.
+    Presentation and demo on 2023-12-11.
+
+    Satisfying the minimal requirements is sufficient for a passing grade. Succesful improvements/additions are a way of obtaining higher scores. ↩︎
+
+Select a repo
+
